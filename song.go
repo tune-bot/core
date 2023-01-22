@@ -1,6 +1,10 @@
 package database
 
-import "github.com/google/uuid"
+import (
+	"os/exec"
+
+	"github.com/google/uuid"
+)
 
 type Song struct {
 	Id  string `json:"id"`
@@ -9,6 +13,7 @@ type Song struct {
 
 func (s *Song) AddToPlaylist(playlistId string) error {
 	songId := uuid.New().String()
+	songExists := false
 	_, err := db.Exec(`
 		insert into song 
 		(id, url) 
@@ -24,6 +29,7 @@ func (s *Song) AddToPlaylist(playlistId string) error {
 			s.Url)
 
 		if err == nil && result.Next() {
+			songExists = true
 			result.Scan(&songId)
 		}
 	}
@@ -37,6 +43,10 @@ func (s *Song) AddToPlaylist(playlistId string) error {
 
 	s.Id = songId
 
+	if !songExists {
+		go download(*s)
+	}
+
 	return err
 }
 
@@ -48,4 +58,8 @@ func (s Song) RemoveFromPlaylist(playlistId string) error {
 		playlistId, s.Id)
 
 	return err
+}
+
+func download(s Song) {
+	exec.Command("~/tune-bot/bin/download", "-o", "'~/tune-bot/library/"+s.Id+".mp3'", s.Url).Run()
 }
