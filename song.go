@@ -60,6 +60,10 @@ func (s Song) RemoveFromPlaylist(playlistId string) error {
 	return err
 }
 
+func (s Song) FilePath() string {
+	return "'~/tune-bot/library/" + s.Id + ".mp3'"
+}
+
 func download(s Song) {
-	exec.Command("~/tune-bot/bin/download", "-o", "'~/tune-bot/library/"+s.Id+".mp3'", s.Url).Run()
+	exec.Command("~/tune-bot/bin/download", "-o", s.FilePath(), s.Url).Run()
 }
