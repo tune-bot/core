@@ -1,6 +1,7 @@
 package database
 
 import (
+	"fmt"
 	"os/exec"
 
 	"github.com/google/uuid"
@@ -65,5 +66,9 @@ func (s Song) FilePath() string {
 }
 
 func download(s Song) {
-	exec.Command("bin/download", "-o", "'"+s.FilePath()+"'", s.Url).Run()
+	//todo debug this: find out why it's not doing
+	fmt.Println("downloading " + s.FilePath() + " from " + s.Url)
+	exec.Command("pwd > tmp.txt").Run()
+	exec.Command("bin/download -o '" + s.FilePath() + "' " + s.Url).Run()
+	fmt.Println("download complete")
 }
