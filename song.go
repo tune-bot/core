@@ -65,5 +65,6 @@ func (s Song) FilePath() string {
 }
 
 func download(s Song) {
-	exec.Command("~/tune-bot/bin/download", "-o", "'"+s.FilePath()+"'", s.Url).Run()
+	exec.Command("pwd").Run()
+	//exec.Command("bin/download", "-o", "'"+s.FilePath()+"'", s.Url).Run()
 }
