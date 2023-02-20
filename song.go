@@ -1,6 +1,7 @@
 package database
 
 import (
+	"bytes"
 	"fmt"
 	"os/exec"
 
@@ -66,9 +67,16 @@ func (s Song) FilePath() string {
 }
 
 func download(s Song) {
-	//todo debug this: find out why it's not doing
 	fmt.Println("downloading " + s.FilePath() + " from " + s.Url)
-	exec.Command("pwd > tmp.txt").Run()
-	exec.Command("bin/download -o '" + s.FilePath() + "' " + s.Url).Run()
+	cmd := exec.Command("bin/download", "-o", "'"+s.FilePath()+"' ", s.Url)
+
+	var outb, errb bytes.Buffer
+	cmd.Stdout = &outb
+	cmd.Stderr = &errb
+	err := cmd.Run()
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	fmt.Println("out:", outb.String(), "err:", errb.String())
 	fmt.Println("download complete")
 }
