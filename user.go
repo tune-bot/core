@@ -115,7 +115,7 @@ func (u *User) getPlaylists() error {
 	if err == nil {
 		for result.Next() {
 			playlist := Playlist{"", "", false, []Song{}}
-			song := Song{"", ""}
+			song := Song{"", "", "", "", "", 0}
 
 			result.Scan(&playlist.Id, &playlist.Name, &song.Id, &song.Url, &playlist.Enabled)
 			addSong(&playlist, song)
