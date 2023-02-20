@@ -68,8 +68,7 @@ func (s Song) FilePath() string {
 
 func download(s Song) {
 	fmt.Println("downloading " + s.FilePath() + " from " + s.Url)
-	//cmd := exec.Command("bin/download", "-o", "'"+s.FilePath()+"' ", s.Url)
-	cmd := exec.Command("pwd")
+	cmd := exec.Command("../bin/download", "-o", "'"+s.FilePath()+"' ", s.Url)
 
 	var outb, errb bytes.Buffer
 	cmd.Stdout = &outb
