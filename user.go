@@ -102,7 +102,16 @@ func (u *User) getPlaylists() error {
 	u.Blacklist = Playlist{"", "Blacklist", false, []Song{}}
 
 	result, err := db.Query(`
-		select bin_to_uuid(p.id) as playlist_id, p.name, bin_to_uuid(s.id) as song_id, s.url, cast(p.enabled as signed) as enabled
+		select 
+			bin_to_uuid(p.id) as playlist_id, 
+			p.name, 
+			bin_to_uuid(s.id) as song_id, 
+			s.url, 
+			cast(p.enabled as signed) as enabled,
+			s.title,
+			s.artist,
+			s.album,
+			s.year
 		from playlist as p 
 		left join playlist_song 
 			on p.id = playlist_song.playlist_id 
@@ -117,7 +126,17 @@ func (u *User) getPlaylists() error {
 			playlist := Playlist{"", "", false, []Song{}}
 			song := Song{"", "", "", "", "", 0}
 
-			result.Scan(&playlist.Id, &playlist.Name, &song.Id, &song.Url, &playlist.Enabled)
+			result.Scan(
+				&playlist.Id,
+				&playlist.Name,
+				&song.Id,
+				&song.Url,
+				&playlist.Enabled,
+				&song.Title,
+				&song.Artist,
+				&song.Album,
+				&song.Year,
+			)
 			addSong(&playlist, song)
 			u.addPlaylist(playlist)
 		}
