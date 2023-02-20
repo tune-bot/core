@@ -9,8 +9,12 @@ import (
 )
 
 type Song struct {
-	Id  string `json:"id"`
-	Url string `json:"url"`
+	Id     string `json:"id"`
+	Url    string `json:"url"`
+	Title  string `json:"title"`
+	Artist string `json:"artist"`
+	Album  string `json:"album"`
+	Year   uint16 `json:"year"`
 }
 
 func (s *Song) AddToPlaylist(playlistId string) error {
@@ -18,10 +22,10 @@ func (s *Song) AddToPlaylist(playlistId string) error {
 	songExists := false
 	_, err := db.Exec(`
 		insert into song 
-		(id, url) 
+		(id, url, title, artist, album, year) 
 		values 
-		(uuid_to_bin(?), ?);`,
-		songId, s.Url)
+		(uuid_to_bin(?), ?, ?, ?, ?, ?);`,
+		songId, s.Url, s.Title, s.Artist, s.Album, s.Year)
 
 	if err != nil {
 		result, err := db.Query(`
