@@ -71,7 +71,7 @@ func (s Song) FilePath() string {
 }
 
 func download(s Song) {
-	cmd := exec.Command("../bin/download", "-o", "'"+s.FilePath()+"' ", s.Url)
+	cmd := exec.Command("../bin/download", "-o", "../"+s.FilePath(), s.Url)
 
 	var outb, errb bytes.Buffer
 	cmd.Stdout = &outb
