@@ -67,11 +67,11 @@ func (s Song) RemoveFromPlaylist(playlistId string) error {
 }
 
 func (s Song) FilePath() string {
-	return "library/" + s.Id + ".mp3"
+	return "~/tune-bot/library/" + s.Id + ".mp3"
 }
 
 func download(s Song) {
-	cmd := exec.Command("../bin/download", "-o", "../"+s.FilePath(), s.Url)
+	cmd := exec.Command("../bin/download", "-o", s.Id, "-P", "../library", "-f", "mp3", s.Url)
 
 	var outb, errb bytes.Buffer
 	cmd.Stdout = &outb
