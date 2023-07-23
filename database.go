@@ -14,7 +14,12 @@ var db_host = os.Getenv("DB_HOST")
 
 func Connect() error {
 	var err error
-	db, err = sql.Open("mysql", db_user+":"+db_pass+"@tcp("+db_host+")/tune_bot")
+	db, err = sql.Open("mysql", db_user+":"+db_pass+"@tcp("+db_host+":3306)/tune_bot")
+
+	if err == nil {
+		err = db.Ping()
+	}
+
 	return err
 }
 
