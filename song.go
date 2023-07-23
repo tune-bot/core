@@ -67,7 +67,7 @@ func (s Song) RemoveFromPlaylist(playlistId string) error {
 }
 
 func (s Song) FilePath() string {
-	return "~/tune-bot/library/" + s.Id + ".m4a"
+	return "../library/" + s.Id + ".m4a"
 }
 
 func download(s Song) {
