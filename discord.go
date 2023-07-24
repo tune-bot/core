@@ -6,6 +6,8 @@ import (
 	"github.com/google/uuid"
 )
 
+var ErrNoUser = errors.New("There are no users associated with this Discord account")
+
 type Discord struct {
 	Id     string `json:"id"`
 	UserId string `json:"userId"`
@@ -37,7 +39,7 @@ func (d *Discord) GetUser() (User, error) {
 		}
 
 		if !result.Next() {
-			return user, errors.New("There are no users associated with this Discord account")
+			return user, ErrNoUser
 		}
 		result.Scan(&d.UserId)
 	}
