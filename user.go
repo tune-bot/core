@@ -1,8 +1,6 @@
 package database
 
 import (
-	"errors"
-
 	"github.com/google/uuid"
 )
 
@@ -24,8 +22,12 @@ func FindUser(username string) (string, error) {
 		where username = ?`,
 		username)
 
-	if err == nil && result.Next() {
-		result.Scan(&userId)
+	if err == nil {
+		if result.Next() {
+			result.Scan(&userId)
+		} else {
+			err = ErrUserNotFound
+		}
 	}
 
 	return userId, err
@@ -67,7 +69,7 @@ func (u *User) Read() error {
 		result.Scan(&u.Id)
 		err = u.getPlaylists()
 	} else if err == nil {
-		err = errors.New("invalid login credentials")
+		err = ErrInvalidLogin
 	}
 
 	return err

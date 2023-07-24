@@ -1,12 +1,8 @@
 package database
 
 import (
-	"errors"
-
 	"github.com/google/uuid"
 )
-
-var ErrNoDiscordUser = errors.New("There are no users associated with this Discord account")
 
 type Discord struct {
 	Id     string `json:"id"`
