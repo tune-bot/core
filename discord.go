@@ -37,7 +37,7 @@ func (d *Discord) GetUser() (User, error) {
 		}
 
 		if !result.Next() {
-			return user, errors.New("There are no users associated with this discord.")
+			return user, errors.New("There are no users associated with this Discord account")
 		}
 		result.Scan(&d.UserId)
 	}
