@@ -14,6 +14,23 @@ type User struct {
 	Blacklist Playlist   `json:"blacklist"`
 }
 
+// Attempt to find a User from a given username, return its ID if it exists
+func FindUser(username string) (string, error) {
+	var userId string
+
+	result, err := db.Query(`
+		select bin_to_uuid(id)
+		from user
+		where username = ?`,
+		username)
+
+	if err == nil && result.Next() {
+		result.Scan(&userId)
+	}
+
+	return userId, err
+}
+
 func (u *User) Create() error {
 	id := uuid.New().String()
 	blacklist := Playlist{"", "Blacklist", false, []Song{}}
