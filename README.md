@@ -1,7 +1,7 @@
 # tune-bot database
-go module for interacting with the tune-bot database
+Go module for interacting with the tune-bot database
 
-downloads songs as they are added.
+Downloads songs as they are added using [yt-dlp](https://github.com/yt-dlp/yt-dlp).
 
 
 ```
