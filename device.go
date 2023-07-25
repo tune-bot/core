@@ -1,8 +1,6 @@
 package database
 
 import (
-	"errors"
-
 	"github.com/google/uuid"
 )
 
@@ -37,7 +35,7 @@ func (d *Device) GetUser() (User, error) {
 		}
 
 		if !result.Next() {
-			return user, errors.New("There are no users associated with this device.")
+			return user, ErrDeviceNoUsers
 		}
 		result.Scan(&d.UserId)
 	}

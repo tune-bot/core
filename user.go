@@ -1,8 +1,6 @@
 package database
 
 import (
-	"errors"
-
 	"github.com/google/uuid"
 )
 
@@ -12,6 +10,27 @@ type User struct {
 	Password  string     `json:"password,omitempty"` // remember to ALWAYS set this to = "" before writing out data!
 	Playlists []Playlist `json:"playlists"`
 	Blacklist Playlist   `json:"blacklist"`
+}
+
+// Attempt to find a User from a given username, return its ID if it exists
+func FindUser(username string) (string, error) {
+	var userId string
+
+	result, err := db.Query(`
+		select bin_to_uuid(id)
+		from user
+		where username = ?`,
+		username)
+
+	if err == nil {
+		if result.Next() {
+			result.Scan(&userId)
+		} else {
+			err = ErrUserNotFound
+		}
+	}
+
+	return userId, err
 }
 
 func (u *User) Create() error {
@@ -50,7 +69,7 @@ func (u *User) Read() error {
 		result.Scan(&u.Id)
 		err = u.getPlaylists()
 	} else if err == nil {
-		err = errors.New("invalid login credentials")
+		err = ErrInvalidLogin
 	}
 
 	return err
