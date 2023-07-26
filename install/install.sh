@@ -14,7 +14,7 @@ chmod a+rx bin/download
 
 bin/download -U
 
-source vars/database.env
+source infrastructure/database.env
 sed -i "s|DB_USER|$DB_USER|g" database/install/create.sql
 sed -i "s|DB_PASS|$DB_PASS|g" database/install/create.sql
 sed -i "s|DB_HOST|$DB_HOST|g" database/install/create.sql
