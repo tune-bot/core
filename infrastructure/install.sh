@@ -12,8 +12,6 @@ mkdir -p bin
 curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o bin/download
 chmod a+rx bin/download
 
-bin/download -U
-
 source infrastructure/database.env
 sed -i "s|DB_USER|$DB_USER|g" core/infrastructure/create.sql
 sed -i "s|DB_PASS|$DB_PASS|g" core/infrastructure/create.sql
