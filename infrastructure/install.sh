@@ -15,15 +15,15 @@ chmod a+rx bin/download
 bin/download -U
 
 source infrastructure/database.env
-sed -i "s|DB_USER|$DB_USER|g" database/infrastructure/create.sql
-sed -i "s|DB_PASS|$DB_PASS|g" database/infrastructure/create.sql
-sed -i "s|DB_HOST|$DB_HOST|g" database/infrastructure/create.sql
-sed -i "s|DB_USER|$DB_USER|g" database/infrastructure/delete.sql
-sed -i "s|DB_PASS|$DB_PASS|g" database/infrastructure/delete.sql
-sed -i "s|DB_HOST|$DB_HOST|g" database/infrastructurel/delete.sql
+sed -i "s|DB_USER|$DB_USER|g" core/infrastructure/create.sql
+sed -i "s|DB_PASS|$DB_PASS|g" core/infrastructure/create.sql
+sed -i "s|DB_HOST|$DB_HOST|g" core/infrastructure/create.sql
+sed -i "s|DB_USER|$DB_USER|g" core/infrastructure/delete.sql
+sed -i "s|DB_PASS|$DB_PASS|g" core/infrastructure/delete.sql
+sed -i "s|DB_HOST|$DB_HOST|g" core/infrastructurel/delete.sql
 
 service mysql start
-mysql --defaults-extra-file=/etc/mysql/debian.cnf < database/infrastructure/create.sql
+mysql --defaults-extra-file=/etc/mysql/debian.cnf < core/infrastructure/create.sql
 service mysql stop
 
 echo "#!/bin/bash" > bin/core
