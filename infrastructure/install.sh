@@ -26,7 +26,7 @@ service mysql start
 mysql --defaults-extra-file=/etc/mysql/debian.cnf < core/infrastructure/create.sql
 service mysql stop
 
-echo "#!/bin/bash" > bin/core
-echo "source vars/database.env" >> bin/core
-echo "service mysql start" >> bin/core
-chmod a+rx bin/core
+echo "#!/bin/bash" > bin/database
+echo "source vars/database.env" >> bin/database
+echo "service mysql start" >> bin/database
+chmod a+rx bin/database
