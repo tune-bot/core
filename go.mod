@@ -1,4 +1,4 @@
-module github.com/tune-bot/database
+module github.com/tune-bot/core
 
 go 1.18
 
