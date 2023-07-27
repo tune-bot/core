@@ -20,7 +20,7 @@ sed -i "s|DB_PASS|$DB_PASS|g" core/infrastructure/create.sql
 sed -i "s|DB_HOST|$DB_HOST|g" core/infrastructure/create.sql
 sed -i "s|DB_USER|$DB_USER|g" core/infrastructure/delete.sql
 sed -i "s|DB_PASS|$DB_PASS|g" core/infrastructure/delete.sql
-sed -i "s|DB_HOST|$DB_HOST|g" core/infrastructurel/delete.sql
+sed -i "s|DB_HOST|$DB_HOST|g" core/infrastructure/delete.sql
 
 service mysql start
 mysql --defaults-extra-file=/etc/mysql/debian.cnf < core/infrastructure/create.sql
