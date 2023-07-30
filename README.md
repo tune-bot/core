@@ -9,3 +9,9 @@ git commit -am "my update"
 git tag vx.x.x
 git push origin vx.x.x
 ```
+
+## Docker
+```
+docker build -t tune-bot-database .
+docker run -p 3306:3306 -td tune-bot-database
+```

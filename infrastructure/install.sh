@@ -8,17 +8,19 @@ apt install -y curl mysql-server python-is-python3 ffmpeg
 
 mkdir -p library
 mkdir -p bin
+mkdir -p vars
 
 curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o bin/download
 chmod a+rx bin/download
 
-source infrastructure/database.env
+source core/infrastructure/database.env
 sed -i "s|DB_USER|$DB_USER|g" core/infrastructure/create.sql
 sed -i "s|DB_PASS|$DB_PASS|g" core/infrastructure/create.sql
 sed -i "s|DB_HOST|$DB_HOST|g" core/infrastructure/create.sql
 sed -i "s|DB_USER|$DB_USER|g" core/infrastructure/delete.sql
 sed -i "s|DB_PASS|$DB_PASS|g" core/infrastructure/delete.sql
 sed -i "s|DB_HOST|$DB_HOST|g" core/infrastructure/delete.sql
+mv core/infrastructure/database.env vars/database.env
 
 service mysql start
 mysql --defaults-extra-file=/etc/mysql/debian.cnf < core/infrastructure/create.sql
