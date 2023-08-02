@@ -71,7 +71,7 @@ func (s Song) FilePath() string {
 }
 
 func download(s Song) {
-	cmd := exec.Command("../bin/download", "-o", s.Id+".m4a", "-P", "../library", "-f", "m4a", s.Url)
+	cmd := exec.Command("../bin/download", "-o", s.Id+".m4a", "-P", "../library", "-f", "m4a", fmt.Sprintf("https://music.youtube.com/watch?v=%s", s.Url))
 
 	var outb, errb bytes.Buffer
 	cmd.Stdout = &outb
