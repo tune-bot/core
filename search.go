@@ -6,15 +6,21 @@ import (
 	"github.com/raitonoberu/ytmusic"
 )
 
-func Search(query string) []Song {
+func Search(query string, numResults int) []Song {
 	results := []Song{}
 	resp := ytmusic.TrackSearch(query)
 	result, _ := resp.Next()
 
+	if numResults > 5 {
+		numResults = 5
+	} else if numResults < 1 {
+		numResults = 1
+	}
+
 	if result != nil {
 		for i, track := range result.Tracks {
-			// Only return top 5 search results
-			if i >= 5 {
+			// Only return top # search results
+			if i >= numResults {
 				break
 			}
 
