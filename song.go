@@ -10,7 +10,7 @@ import (
 
 type Song struct {
 	Id     string `json:"id"`
-	Url    string `json:"url"`
+	Code   string `json:"code"`
 	Title  string `json:"title"`
 	Artist string `json:"artist"`
 	Album  string `json:"album"`
@@ -22,17 +22,17 @@ func (s *Song) AddToPlaylist(playlistId string) error {
 	songExists := false
 	_, err := db.Exec(`
 		insert into song 
-		(id, url, title, artist, album, year) 
+		(id, code, title, artist, album, year) 
 		values 
 		(uuid_to_bin(?), ?, ?, ?, ?, ?);`,
-		songId, s.Url, s.Title, s.Artist, s.Album, s.Year)
+		songId, s.Code, s.Title, s.Artist, s.Album, s.Year)
 
 	if err != nil {
 		result, err := db.Query(`
 			select bin_to_uuid(id) as id 
 			from song 
-			where url = ?;`,
-			s.Url)
+			where code = ?;`,
+			s.Code)
 
 		if err == nil && result.Next() {
 			songExists = true
@@ -71,7 +71,7 @@ func (s Song) FilePath() string {
 }
 
 func download(s Song) {
-	cmd := exec.Command("../bin/download", "-o", s.Id+".m4a", "-P", "../library", "-f", "m4a", fmt.Sprintf("https://music.youtube.com/watch?v=%s", s.Url))
+	cmd := exec.Command("../bin/download", "-o", s.Id+".m4a", "-P", "../library", "-f", "m4a", fmt.Sprintf("https://music.youtube.com/watch?v=%s", s.Code))
 
 	var outb, errb bytes.Buffer
 	cmd.Stdout = &outb

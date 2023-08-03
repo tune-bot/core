@@ -21,7 +21,7 @@ func Search(query string) []Song {
 					Title:  track.Title,
 					Artist: getArtists(track.Artists),
 					Album:  track.Album.Name,
-					Url:    track.VideoID,
+					Code:    track.VideoID,
 				}
 
 				// Get album info
