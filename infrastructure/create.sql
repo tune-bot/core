@@ -18,7 +18,7 @@ create table if not exists `device` (
 create table if not exists `discord` (
     `id` binary(16) primary key,
     `user_id` binary(16) not null,
-    `name` varchar(37) not null unique,
+    `name` varchar(32) not null unique,
     foreign key(`user_id`) references `user`(`id`)
 );
 
