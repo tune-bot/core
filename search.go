@@ -9,31 +9,31 @@ import (
 func Search(query string) []Song {
 	results := []Song{}
 	resp := ytmusic.TrackSearch(query)
-	var result *ytmusic.SearchResult
-	var err error
+	result, _ := resp.Next()
 
-	for err == nil {
-		result, err = resp.Next()
-
-		if result != nil {
-			for _, track := range result.Tracks {
-				song := Song{
-					Title:  track.Title,
-					Artist: getArtists(track.Artists),
-					Album:  track.Album.Name,
-					Code:    track.VideoID,
-				}
-
-				// Get album info
-				album := findAlbum(track.Album.Name, track.Album.ID)
-				if album != nil {
-					year, _ := strconv.ParseUint(album.Year, 10, 16)
-					song.Year = uint16(year)
-				}
-
-				// Add song to search results
-				results = append(results, song)
+	if result != nil {
+		for i, track := range result.Tracks {
+			// Only return top 5 search results
+			if i >= 5 {
+				break
 			}
+
+			song := Song{
+				Title:  track.Title,
+				Artist: getArtists(track.Artists),
+				Album:  track.Album.Name,
+				Code:   track.VideoID,
+			}
+
+			// Get album info
+			album := findAlbum(track.Album.Name, track.Album.ID)
+			if album != nil {
+				year, _ := strconv.ParseUint(album.Year, 10, 16)
+				song.Year = uint16(year)
+			}
+
+			// Add song to search results
+			results = append(results, song)
 		}
 	}
 

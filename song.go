@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"os/exec"
+	"strings"
 
 	"github.com/google/uuid"
 )
@@ -50,7 +51,7 @@ func (s *Song) AddToPlaylist(playlistId string) error {
 	s.Id = songId
 
 	if !songExists {
-		go download(*s)
+		go s.download()
 	}
 
 	return err
@@ -70,7 +71,25 @@ func (s Song) FilePath() string {
 	return "../library/" + s.Id + ".m4a"
 }
 
-func download(s Song) {
+func (s Song) String() string {
+	str := fmt.Sprintf("Title: %s\n", s.Title)
+
+	if strings.Count(s.Artist, ",") > 0 {
+		str += "Artists: "
+	} else {
+		str += "Artist: "
+	}
+	str += s.Artist + "\n"
+	str += fmt.Sprintf("Album: %s\n", s.Album)
+
+	if s.Year != 0 {
+		str += fmt.Sprintf("Year: %d\n", s.Year)
+	}
+
+	return str
+}
+
+func (s Song) download() {
 	cmd := exec.Command("../bin/download", "-o", s.Id+".m4a", "-P", "../library", "-f", "m4a", fmt.Sprintf("https://music.youtube.com/watch?v=%s", s.Code))
 
 	var outb, errb bytes.Buffer
