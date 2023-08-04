@@ -20,7 +20,7 @@ func Search(query string, numResults int) []Song {
 	if result != nil {
 		for i, track := range result.Tracks {
 			// Only return top # search results
-			if i >= numResults {
+			if i == numResults {
 				break
 			}
 
