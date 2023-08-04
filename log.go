@@ -44,14 +44,14 @@ func rotateErrorColor() color {
 	return errorColourInRotation
 }
 
-func printLnColor(msg string, colour color) {
+func PrintLnColor(msg string, colour color) {
 	fmt.Printf("\033[%dm%s\033[0m\n", colour, msg)
 }
 
-func printError(msg string) {
-	printLnColor(msg, rotateErrorColor())
+func PrintError(msg string) {
+	PrintLnColor(msg, rotateErrorColor())
 }
 
-func printSuccess(msg string) {
-	printLnColor(msg, rotateSuccessColor())
+func PrintSuccess(msg string) {
+	PrintLnColor(msg, rotateSuccessColor())
 }
