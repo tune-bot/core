@@ -26,7 +26,7 @@ func FindUser(username string) (string, error) {
 		if result.Next() {
 			result.Scan(&userId)
 		} else {
-			err = ErrUserNotFound
+			err = ErrNoUser
 		}
 	}
 
