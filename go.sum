@@ -4,3 +4,5 @@ github.com/google/uuid v1.3.0 h1:t6JiXgmwXMjEs8VusXIJk2BXHsn+wx8BZdTaoZ5fu7I=
 github.com/google/uuid v1.3.0/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+yHo=
 github.com/raitonoberu/ytmusic v0.0.0-20220927155833-3d1de71caa11 h1:jpddPIqdeF+TxOT1Zzd1u+k9AiVT4XJX/VuyZUnrgZE=
 github.com/raitonoberu/ytmusic v0.0.0-20220927155833-3d1de71caa11/go.mod h1:hgP4hPl8kmhAaMjuaxxqKnHa7yA9UkXw4KY97XLyjRs=
+golang.org/x/crypto v0.12.0 h1:tFM/ta59kqch6LlvYnPa0yx5a83cL2nHflFhYKvv9Yk=
+golang.org/x/crypto v0.12.0/go.mod h1:NF0Gs7EO5K4qLn+Ylc+fih8BSTeIjAP05siRnAh98yw=
