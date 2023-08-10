@@ -44,8 +44,6 @@ func (u *User) Create() error {
 		return err
 	}
 
-	PrintDebug(string(hash))
-
 	_, err = db.Exec(`
 		insert into user 
 		(id, username, password) 
@@ -79,9 +77,6 @@ func (u *User) Read() error {
 		hash := ""
 
 		result.Scan(&u.Id, &hash)
-
-		PrintDebug(u.Password)
-		PrintDebug(string(hash))
 
 		err = bcrypt.CompareHashAndPassword([]byte(hash), []byte(u.Password))
 		if err != nil {
