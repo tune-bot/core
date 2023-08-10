@@ -2,6 +2,7 @@ package core
 
 import (
 	"github.com/google/uuid"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type User struct {
@@ -36,12 +37,19 @@ func FindUser(username string) (string, error) {
 func (u *User) Create() error {
 	id := uuid.New().String()
 	blacklist := Playlist{"", "Blacklist", false, []Song{}}
-	_, err := db.Exec(`
+
+	hash, err := bcrypt.GenerateFromPassword([]byte(u.Password), 10)
+
+	if err != nil {
+		return err
+	}
+
+	_, err = db.Exec(`
 		insert into user 
 		(id, username, password) 
 		values 
 		(uuid_to_bin(?), ?, ?);`,
-		id, u.Username, u.Password)
+		id, u.Username, hash)
 
 	if err == nil {
 		blacklist = Playlist{"", "Blacklist", true, []Song{}}
@@ -60,14 +68,22 @@ func (u *User) Read() error {
 	u.Blacklist = Playlist{"", "Blacklist", false, []Song{}}
 
 	result, err := db.Query(`
-		select bin_to_uuid(id) as id 
+		select bin_to_uuid(id) as id, password
 		from user 
-		where username = ? and password = cast(? as binary(60));`,
-		u.Username, u.Password)
+		where username = ?;`,
+		u.Username)
 
 	if err == nil && result.Next() {
-		result.Scan(&u.Id)
-		err = u.getPlaylists()
+		hash := ""
+
+		result.Scan(&u.Id, &hash)
+
+		err = bcrypt.CompareHashAndPassword([]byte(hash), []byte(u.Password))
+		if err != nil {
+			err = ErrInvalidLogin
+		} else {
+			err = u.getPlaylists()
+		}
 	} else if err == nil {
 		err = ErrInvalidLogin
 	}

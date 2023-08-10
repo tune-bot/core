@@ -16,13 +16,23 @@ var cyan color = 36
 var white color = 37
 var reset color = 0
 
+var debugColourInRotation = yellow
+
+func rotageDebugColor() color {
+	switch debugColourInRotation {
+	case yellow:
+		debugColourInRotation = blue
+	case blue:
+		debugColourInRotation = yellow
+	}
+	return debugColourInRotation
+}
+
 var successColourInRotation color = cyan
 
 func rotateSuccessColor() color {
 	switch successColourInRotation {
 	case green:
-		successColourInRotation = blue
-	case blue:
 		successColourInRotation = cyan
 	case cyan:
 		successColourInRotation = green
@@ -35,8 +45,6 @@ var errorColourInRotation color = magenta
 func rotateErrorColor() color {
 	switch errorColourInRotation {
 	case red:
-		errorColourInRotation = yellow
-	case yellow:
 		errorColourInRotation = magenta
 	case magenta:
 		errorColourInRotation = red
@@ -46,6 +54,10 @@ func rotateErrorColor() color {
 
 func PrintLnColor(msg string, colour color) {
 	fmt.Printf("\033[%dm%s\033[0m\n", colour, msg)
+}
+
+func PrintDebug(msg string) {
+	PrintLnColor(msg, rotageDebugColor())
 }
 
 func PrintError(msg string) {
