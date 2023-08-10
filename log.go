@@ -63,6 +63,10 @@ func PrintLnColor(msg string, colour color) {
 }
 
 func PrintDebug(msg string) {
+	var a, b = os.LookupEnv("DEBUG")
+	PrintSuccess(a)
+	PrintSuccess(fmt.Sprintf("%t", b))
+
 	if isDebug {
 		PrintLnColor(msg, rotageDebugColor())
 	}
