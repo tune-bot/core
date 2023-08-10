@@ -2,7 +2,6 @@ package core
 
 import (
 	"fmt"
-	"os"
 )
 
 type color int
@@ -16,11 +15,6 @@ var magenta color = 35
 var cyan color = 36
 var white color = 37
 var reset color = 0
-
-var debugEnv, isSet = os.LookupEnv("DEBUG")
-
-var isDebugOverride = false // set this to true to ignore environment variable
-var isDebug = (isSet && debugEnv != "false" && debugEnv != "0" && debugEnv != "") || isDebugOverride
 
 var debugColourInRotation = yellow
 
@@ -63,13 +57,7 @@ func PrintLnColor(msg string, colour color) {
 }
 
 func PrintDebug(msg string) {
-	var a, b = os.LookupEnv("DEBUG")
-	PrintSuccess(a)
-	PrintSuccess(fmt.Sprintf("%t", b))
-
-	if isDebug {
-		PrintLnColor(msg, rotageDebugColor())
-	}
+	PrintLnColor(msg, rotageDebugColor())
 }
 
 func PrintError(msg string) {
