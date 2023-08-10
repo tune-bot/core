@@ -98,9 +98,9 @@ func (s Song) download() {
 
 	err := cmd.Run()
 	if err != nil {
-		fmt.Println(err.Error())
+		PrintError(err.Error())
 	} else {
-		fmt.Println(outb.String())
-		fmt.Println(errb.String())
+		PrintSuccess(outb.String())
+		PrintError(errb.String())
 	}
 }

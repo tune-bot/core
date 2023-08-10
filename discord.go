@@ -26,22 +26,23 @@ func (d *Discord) Link() error {
 
 func (d *Discord) GetUser() (User, error) {
 	user := User{}
+	result, err := db.Query(`
+		select bin_to_uuid(u.id), u.username
+		from user as u
+		inner join discord AS d on u.id = d.user_id
+		where d.name = ?;`,
+		d.Name)
 
-	if d.UserId == "" {
-		result, err := db.Query("select bin_to_uuid(user_id) as user_id from discord where name = ?;", d.Name)
-
-		if err != nil {
-			return user, err
-		}
-
-		if !result.Next() {
-			return user, ErrNoDiscordUser
-		}
-		result.Scan(&d.UserId)
+	if err != nil {
+		PrintError(err.Error())
+		return user, ErrNoUser
 	}
 
-	user.Id = d.UserId
-	err := user.getPlaylists()
+	if result.Next() {
+		result.Scan(&user.Id, &user.Username)
+		err = user.getPlaylists()
+		return user, err
+	}
 
-	return user, err
+	return user, ErrNoUser
 }
