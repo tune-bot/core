@@ -22,5 +22,5 @@ jobs:
         go-version: '1.18'
 
     - name: Vet
-      run: go vet src
+      run: go vet ./src
   
