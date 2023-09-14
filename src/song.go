@@ -73,7 +73,7 @@ func (s Song) FilePath() string {
 }
 
 func (s Song) String() string {
-	str := fmt.Sprintf("Title: %s\n", s.Title)
+	str := fmt.Sprintf("Title: %s\n", s.Title.String)
 
 	if strings.Count(s.Artist.String, ",") > 0 {
 		str += "Artists: "
@@ -81,17 +81,17 @@ func (s Song) String() string {
 		str += "Artist: "
 	}
 	str += s.Artist.String + "\n"
-	str += fmt.Sprintf("Album: %s\n", s.Album)
+	str += fmt.Sprintf("Album: %s\n", s.Album.String)
 
 	if s.Year.Int16 != 0 {
-		str += fmt.Sprintf("Year: %d\n", s.Year)
+		str += fmt.Sprintf("Year: %d\n", s.Year.Int16)
 	}
 
 	return str
 }
 
 func (s Song) download() {
-	cmd := exec.Command("../bin/download", "-o", s.Id.String+".m4a", "-P", "../library", "-f", "m4a", fmt.Sprintf("https://music.youtube.com/watch?v=%s", s.Code))
+	cmd := exec.Command("../bin/download", "-o", s.Id.String+".m4a", "-P", "../library", "-f", "m4a", fmt.Sprintf("https://music.youtube.com/watch?v=%s", s.Code.String))
 
 	var outb, errb bytes.Buffer
 	cmd.Stdout = &outb
