@@ -119,12 +119,12 @@ func (u *User) addPlaylist(playlist Playlist) {
 }
 
 func addSong(playlist *Playlist, song Song) {
-	if song.Id == "" {
+	if song.Id.String == "" {
 		return
 	}
 
 	for i := 0; i < len(playlist.Songs); i++ {
-		if playlist.Id == playlist.Songs[i].Id {
+		if playlist.Id == playlist.Songs[i].Id.String {
 			return
 		}
 	}
@@ -158,8 +158,8 @@ func (u *User) getPlaylists() error {
 
 	if err == nil {
 		for result.Next() {
-			playlist := Playlist{"", "", false, []Song{}}
-			song := Song{"", "", "", "", "", 0}
+			playlist := Playlist{Songs: []Song{}}
+			song := Song{}
 
 			result.Scan(
 				&playlist.Id,

@@ -2,6 +2,7 @@ package core
 
 import (
 	"bytes"
+	"database/sql"
 	"fmt"
 	"os/exec"
 	"strings"
@@ -10,12 +11,12 @@ import (
 )
 
 type Song struct {
-	Id     string `json:"id"`
-	Code   string `json:"code"`
-	Title  string `json:"title"`
-	Artist string `json:"artist"`
-	Album  string `json:"album"`
-	Year   uint16 `json:"year"`
+	Id     sql.NullString `json:"id"`
+	Code   sql.NullString `json:"code"`
+	Title  sql.NullString `json:"title"`
+	Artist sql.NullString `json:"artist"`
+	Album  sql.NullString `json:"album"`
+	Year   sql.NullInt16  `json:"year"`
 }
 
 func (s *Song) AddToPlaylist(playlistId string) error {
@@ -48,7 +49,7 @@ func (s *Song) AddToPlaylist(playlistId string) error {
 		(uuid_to_bin(?), uuid_to_bin(?), uuid_to_bin(?));`,
 		uuid.New().String(), playlistId, songId)
 
-	s.Id = songId
+	s.Id = sql.NullString{String: songId, Valid: true}
 
 	if !songExists {
 		go s.download()
@@ -68,29 +69,29 @@ func (s Song) RemoveFromPlaylist(playlistId string) error {
 }
 
 func (s Song) FilePath() string {
-	return "../library/" + s.Id + ".m4a"
+	return "../library/" + s.Id.String + ".m4a"
 }
 
 func (s Song) String() string {
-	str := fmt.Sprintf("Title: %s\n", s.Title)
+	str := fmt.Sprintf("Title: %s\n", s.Title.String)
 
-	if strings.Count(s.Artist, ",") > 0 {
+	if strings.Count(s.Artist.String, ",") > 0 {
 		str += "Artists: "
 	} else {
 		str += "Artist: "
 	}
-	str += s.Artist + "\n"
-	str += fmt.Sprintf("Album: %s\n", s.Album)
+	str += s.Artist.String + "\n"
+	str += fmt.Sprintf("Album: %s\n", s.Album.String)
 
-	if s.Year != 0 {
-		str += fmt.Sprintf("Year: %d\n", s.Year)
+	if s.Year.Int16 != 0 {
+		str += fmt.Sprintf("Year: %d\n", s.Year.Int16)
 	}
 
 	return str
 }
 
 func (s Song) download() {
-	cmd := exec.Command("../bin/download", "-o", s.Id+".m4a", "-P", "../library", "-f", "m4a", fmt.Sprintf("https://music.youtube.com/watch?v=%s", s.Code))
+	cmd := exec.Command("../bin/download", "-o", s.Id.String+".m4a", "-P", "../library", "-f", "m4a", fmt.Sprintf("https://music.youtube.com/watch?v=%s", s.Code.String))
 
 	var outb, errb bytes.Buffer
 	cmd.Stdout = &outb
