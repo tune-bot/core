@@ -1,6 +1,7 @@
 package core
 
 import (
+	"database/sql"
 	"strconv"
 
 	"github.com/raitonoberu/ytmusic"
@@ -25,17 +26,17 @@ func Search(query string, numResults int) []Song {
 			}
 
 			song := Song{
-				Title:  track.Title,
-				Artist: getArtists(track.Artists),
-				Album:  track.Album.Name,
-				Code:   track.VideoID,
+				Title:  sql.NullString{String: track.Title, Valid: true},
+				Artist: sql.NullString{String: getArtists(track.Artists), Valid: true},
+				Album:  sql.NullString{String: track.Album.Name, Valid: true},
+				Code:   sql.NullString{String: track.VideoID, Valid: true},
 			}
 
 			// Get album info
 			album := findAlbum(track.Album.Name, track.Album.ID)
 			if album != nil {
 				year, _ := strconv.ParseUint(album.Year, 10, 16)
-				song.Year = uint16(year)
+				song.Year = sql.NullInt16{Int16: int16(year), Valid: true}
 			}
 
 			// Add song to search results
