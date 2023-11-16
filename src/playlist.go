@@ -39,6 +39,13 @@ func (p *Playlist) Update() error {
 }
 
 func (p *Playlist) Delete() error {
+	if _, err := db.Exec(`
+		delete from playlist_song
+		where playlist_id = uuid_to_bin(?);`,
+		p.Id); err != nil {
+		return err
+	}
+
 	_, err := db.Exec(`
 		delete from playlist 
 		where id = uuid_to_bin(?);`,
