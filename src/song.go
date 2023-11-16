@@ -22,11 +22,12 @@ type Song struct {
 func (s *Song) AddToPlaylist(playlistId string) error {
 	songId := uuid.New().String()
 	songExists := false
+
 	_, err := db.Exec(`
 		insert into song 
 		(id, code, title, artist, album, year) 
 		values 
-		(uuid_to_bin(?), ?, ?, ?, ?, ?);`,
+		(uuid_to_bin(?), ?, LEFT(64, ?), ?, LEFT(?, 64), ?);`,
 		songId, s.Code, s.Title, s.Artist, s.Album, s.Year)
 
 	if err != nil {
